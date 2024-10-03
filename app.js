@@ -5,6 +5,7 @@ let boxes=document.querySelectorAll(".box");
 let resetBtn=document.querySelector("#reset-btn");
 
 let turnO=true;
+let count = 0;
 
 const winPatterns=[
     [0,1,2],
@@ -19,6 +20,7 @@ const winPatterns=[
 
 const resetGame=()=>{
     turnO=true;
+    count = 0;
     enableBoxes();
     msgContainer.classList.add("hide");
 }
@@ -34,12 +36,20 @@ boxes.forEach((box)=>{
             turnO=true;
         }
         box.disabled=true;
+        count++;
 
-        matchPatterns()
+        let isWinner = checkWinner();
+        if(count === 9 && !isWinner){
+            drawGame()
     });
 });
 
-const matchPatterns=()=>{
+const drawGame = () => {
+    msg.innerHTML = "Game was a draw";
+    msgContainer.classList.remove("hide");
+}
+
+const checkWinner = ()=>{
     for(let patterns of winPatterns){
         
        let pos1Val=boxes[patterns[0]].innerText;
@@ -50,6 +60,7 @@ const matchPatterns=()=>{
         if(pos1Val===pos2Val && pos2Val===pos3Val){
             
             showWinner(pos1Val);
+            return true;
         }
        }
 
